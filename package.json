@@ -11,5 +11,8 @@
     "url": "/Users/janelgrant/GraceHopper:Fullstack Immersive/Review/twitter-js/.git/"
   },
   "author": "Janel Grant",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }
