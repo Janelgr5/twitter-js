@@ -1,13 +1,17 @@
 //Making an Application Instance
 
 const express = require( 'express' );
+const app = express(); // creates an instance of an express application
+
 //express/connect
 //Simple app that will log all request in the Apache combined format to STDOUT
 const morgan = require('morgan');
 const nunjucks = require('nunjucks'); //templating app
 const routes = require('./routes');
+const fs = require('fs');
+const path = require('path');
+// const mime = require('mime')//must npm install first
 
-const app = express(); // creates an instance of an express application
 
 
 //Here is a simple example of a middleware function called “myLogger”. 
@@ -23,8 +27,16 @@ const app = express(); // creates an instance of an express application
 //For example, the following code loads the myLogger middleware function before the route to the root path (/).
 // app.use(myLogger);
 // app.use('/special/', myLogger);
-app.use(morgan('combined'));
-app.use('/', routes);
+
+//building your own (manual) static middleware function
+// app.use(function(req, res, next){
+//     var mimeType = mime.lookup(req.path);
+//     fs.readFile('./public' + req.path, function(err, fileBuffer){
+//         if (err) return next();
+//         res.header('Content-Type', mimeType);
+//         res.send(fileBuffer);
+//     });
+// });
 
 
 //Using nunjucks.configure and nunjucks.render, try making a simple script that will use your template to log out
@@ -48,6 +60,13 @@ app.engine('html', nunjucks.render); // when giving html files to res.render, te
 nunjucks.configure('views', { noCache: true }); // point nunjucks to the proper directory for templates
 //Turn off Nunjuck's caching by turning on the noCache option
 //Caching a view saves the rendered document and only re-renders it if the data has actually changed.
+
+//Logging Middleware
+app.use(morgan('combined'));
+//Express Static Middleware
+app.use(express.static(__dirname + '/public'));
+app.use('/', routes);
+
 
 /*
 //Route requests in Express with app.METHOD( path, handler )
