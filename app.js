@@ -5,6 +5,7 @@ const express = require( 'express' );
 //Simple app that will log all request in the Apache combined format to STDOUT
 const morgan = require('morgan');
 const nunjucks = require('nunjucks'); //templating app
+const routes = require('./routes');
 
 const app = express(); // creates an instance of an express application
 
@@ -22,7 +23,9 @@ const app = express(); // creates an instance of an express application
 //For example, the following code loads the myLogger middleware function before the route to the root path (/).
 // app.use(myLogger);
 // app.use('/special/', myLogger);
-app.use(morgan('combined'))
+app.use(morgan('combined'));
+app.use('/', routes);
+
 
 //Using nunjucks.configure and nunjucks.render, try making a simple script that will use your template to log out
 // var locals = {
@@ -46,7 +49,8 @@ nunjucks.configure('views', { noCache: true }); // point nunjucks to the proper 
 //Turn off Nunjuck's caching by turning on the noCache option
 //Caching a view saves the rendered document and only re-renders it if the data has actually changed.
 
-
+/*
+//Route requests in Express with app.METHOD( path, handler )
 
 // GET method route
 app.get('/', function (req, res, next) {
@@ -93,6 +97,7 @@ app.post('/', function (req, res) {
     res.send('POST request to the homepage')
     next();
 })
+*/
 
 //Starting a Server
 app.listen(3000, function(){

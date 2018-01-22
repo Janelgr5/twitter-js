@@ -1,7 +1,39 @@
-<h1>{{ title }}</h1>
+<!--This is the inheritance mentioned earlier. 
+    When Nunjucks goes to render index, 
+    it will automatically embed that template inside the layout template 
+    (at the {% block content %} tag) 
+    and render both as a single file. 
+    Other pages will also be able to extend layout in this fashion, 
+    meaning we only have to worry about each page's unique content.-->
+{% extends "layout.html" %}
+
+{% block content %}
+  
+  <div class="page-header">
+    <h1>Welcome to Twitter.js!</h1>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <img src="https://pbs.twimg.com/profile_images/2450268678/olxp11gnt09no2y2wpsh_normal.jpeg"><br>
+      <b>Your Name</b><br>
+      100 followers
+    </div>
+    <div class="col-md-9">
+    
+      <!-- display tweets here -->
+      {% for tweet in tweets %}
+        <li>{{tweet.content}}</li>
+      {% endfor %}
+      
+    </div>
+  </div>
+    
+{% endblock %}
+
+<!-- <h1>{{ title }}</h1>
 <p>This is a bare-bones template.</p>
 <ul>
 {% for person in people %}
   <li>{{ person.name }}</li>
 {% endfor %}
-</ul>
+</ul> -->
