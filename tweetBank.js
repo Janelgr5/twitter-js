@@ -2,7 +2,7 @@
 const _ = require('lodash');
 //This will store the tweets.
 let data = [];
-
+//define tweetBank functions
 function add (name, content) {
     data.push({ name: name, content: content });
   }

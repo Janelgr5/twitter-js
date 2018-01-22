@@ -7,10 +7,40 @@ const app = express(); // creates an instance of an express application
 //Simple app that will log all request in the Apache combined format to STDOUT
 const morgan = require('morgan');
 const nunjucks = require('nunjucks'); //templating app
-const routes = require('./routes');
-const fs = require('fs');
+const routes = require('./routes');//exports index.js to app.js
+//for Express Static route/middleware
 const path = require('path');
-// const mime = require('mime')//must npm install first
+const fs = require('fs');
+const mime = require('mime')//must npm install first
+
+//These lines are "boilerplate" nunjucks integration code that do not vary much from project to project.
+app.set('view engine', 'html'); // have res.render work with html files
+app.engine('html', nunjucks.render); // when giving html files to res.render, tell it to use nunjucks
+nunjucks.configure('views', { noCache: true }); // point nunjucks to the proper directory for templates
+//Turn off Nunjuck's caching by turning on the noCache option
+//Caching a view saves the rendered document and only re-renders it if the data has actually changed.
+
+//Logging Middleware
+app.use(morgan('combined'));
+app.use('/', routes);//registers index.js as middleware
+
+//Express Static Middleware - built in
+app.use(express.static(path.join(__dirname, 'public')));
+//manually-written static file middleware
+// app.use(function(req, res, next){
+//     var mimeType = mime.lookup(req.path);
+//     fs.readFile('./public' + req.path, function(err, fileBuffer){
+//         if(err) return next();
+//         res.header('Content-Type', mimeType);
+//         res.send(fileBuffer);
+//     })
+// })
+
+
+// app.get("/stylesheets/style.css", function(rec, res, next){
+//     //res.sendFile(“/public/stylesheets/style.css");
+//     res.sendFile(path.join(__dirname + '/../../index.html'));
+// });
 
 
 
@@ -54,20 +84,13 @@ const path = require('path');
 //     console.log(output);
 // });
 
-//These lines are "boilerplate" nunjucks integration code that do not vary much from project to project.
-app.set('view engine', 'html'); // have res.render work with html files
-app.engine('html', nunjucks.render); // when giving html files to res.render, tell it to use nunjucks
-nunjucks.configure('views', { noCache: true }); // point nunjucks to the proper directory for templates
-//Turn off Nunjuck's caching by turning on the noCache option
-//Caching a view saves the rendered document and only re-renders it if the data has actually changed.
-
-//Logging Middleware
-app.use(morgan('combined'));
-//Express Static Middleware
-app.use(express.static(__dirname + '/public'));
-app.use('/', routes);
 
 
+
+
+// app.get('/', function(req, res, next){
+//     res.render('index', {title: 'Hall of Fame', people: people})
+// });
 /*
 //Route requests in Express with app.METHOD( path, handler )
 
