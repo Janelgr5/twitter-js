@@ -13,6 +13,7 @@ const path = require('path');
 const fs = require('fs');
 const mime = require('mime')//must npm install first
 const bodyParser = require('body-parser');
+const socketio =  require('socket.io')
 
 //These lines are "boilerplate" nunjucks integration code that do not vary much from project to project.
 app.set('view engine', 'html'); // have res.render work with html files
@@ -145,7 +146,9 @@ app.post('/', function (req, res) {
 */
 
 //Starting a Server
-app.listen(3000, function(){
-    //optional
-    console.log("server listening");
-})
+const server = app.list(3000);
+const io = socketio.listen(server);
+// app.listen(3000, function(){
+//     //optional
+//     console.log("server listening");
+// })
