@@ -12,6 +12,7 @@ const routes = require('./routes');//exports index.js to app.js
 const path = require('path');
 const fs = require('fs');
 const mime = require('mime')//must npm install first
+const bodyParser = require('body-parser');
 
 //These lines are "boilerplate" nunjucks integration code that do not vary much from project to project.
 app.set('view engine', 'html'); // have res.render work with html files
@@ -22,10 +23,12 @@ nunjucks.configure('views', { noCache: true }); // point nunjucks to the proper 
 
 //Logging Middleware
 app.use(morgan('combined'));
-app.use('/', routes);//registers index.js as middleware
-
 //Express Static Middleware - built in
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({extended: true}));//for HTML form submits
+app.use(bodyParser.json());//would be for AJAX requests
+app.use('/', routes);//registers index.js as middleware
+
 //manually-written static file middleware
 // app.use(function(req, res, next){
 //     var mimeType = mime.lookup(req.path);
