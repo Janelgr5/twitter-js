@@ -4,7 +4,8 @@ const _ = require('lodash');
 let data = [];
 //define tweetBank functions
 function add (name, content) {
-    data.push({ name: name, content: content });
+    data.push({ name: name, content: content, id: data.length });
+    //each time we add, the id will increase by one;
   }
   
   function list () {
